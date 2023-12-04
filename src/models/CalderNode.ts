@@ -32,13 +32,16 @@ export class CalderNode {
     return this.left_node === null && this.right_node === null
   }
 
-  draw(node: any): undefined {
-    node
-      .append('circle')
-      .attr('cx', this.pos.x)
-      .attr('cy', this.pos.y)
-      .attr('r', this.params.HINGE_RADIUS)
-      .class('calder_hinge')
+  draw(node: any, is_root: boolean = false): undefined {
+    console.log(node, is_root)
+    if (this.shape === null) {
+      node
+        .append('circle')
+        .attr('cx', this.pos.x)
+        .attr('cy', this.pos.y - this.params.HINGE_RADIUS)
+        .attr('r', this.params.HINGE_RADIUS)
+        .attr('class', 'calder_hinge')
+    }
 
     if (this.left_node) {
       node
@@ -46,8 +49,8 @@ export class CalderNode {
         .attr('x1', this.pos.x)
         .attr('y1', this.pos.y)
         .attr('x2', this.left_node.pos.x)
-        .attr('y2', this.left_node.pos.y)
-        .class('calder_wire')
+        .attr('y2', this.left_node.pos.y + this.params.DELTA_Y)
+        .attr('class', 'calder_wire')
       this.left_node.draw(node)
     }
     if (this.right_node) {
@@ -56,14 +59,22 @@ export class CalderNode {
         .attr('x1', this.pos.x)
         .attr('y1', this.pos.y)
         .attr('x2', this.right_node.pos.x)
-        .attr('y2', this.right_node.pos.y)
-        .class('calder_wire')
+        .attr('y2', this.right_node.pos.y + this.params.DELTA_Y)
+        .attr('class', 'calder_wire')
       this.right_node.draw(node)
     }
     if (this.shape) {
-      this.shape.draw(node)
+      this.shape.draw(node, this.pos, this.params.DELTA_Y)
     }
 
-    // Draw line from
+    if (is_root) {
+      node
+        .append('line')
+        .attr('x1', this.pos.x)
+        .attr('y1', this.pos.y - 2 * this.params.HINGE_RADIUS)
+        .attr('x2', this.pos.x)
+        .attr('y2', this.pos.y - 50)
+        .attr('class', 'calder_wire')
+    }
   }
 }

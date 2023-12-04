@@ -5,9 +5,11 @@ export abstract class CalderShape {
   center: Point2D = { x: 0, y: 0 }
   color: string = '#FF0000'
 
-  constructor() {}
+  constructor(color: string) {
+    this.color = color
+  }
 
-  abstract draw(node: any): undefined
+  abstract draw(node: any, center: Point2D, dy: number): undefined
 
   abstract weight(): number
 }

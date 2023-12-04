@@ -3,8 +3,8 @@ import { CalderShape } from './CalderShape'
 
 export class CalderCircle extends CalderShape {
   radius: number = 0
-  constructor(radius: number) {
-    super()
+  constructor(radius: number, color: string) {
+    super(color)
     this.radius = radius
   }
   weight(): number {
@@ -16,8 +16,8 @@ export class CalderCircle extends CalderShape {
       .attr('cx', center.x)
       .attr('cy', center.y + dy)
       .attr('r', this.radius)
-      .style('fill-color', this.color)
+      .style('fill', this.color)
       .style('stroke', null)
-      .class('calder_circle')
+      .attr('class', 'calder_circle')
   }
 }
