@@ -1,7 +1,7 @@
+import type { CalderParams } from '@/types/CalderParams'
 import { GeometryService } from '../services/GeometryService'
 import { type Point2D } from '../types/Point2D'
 import { CalderShape } from './CalderShape'
-import { CalderWire } from './CalderWire'
 
 export class CalderNode {
   /**
@@ -11,22 +11,19 @@ export class CalderNode {
   public left_node: CalderNode | null = null
   public right_node: CalderNode | null = null
   public shape: CalderShape | null = null
-  public wire: CalderWire | null = null
 
   // Center of mass
-  center: Point2D = { x: 0, y: 0 }
+  pos: Point2D = { x: 0, y: 0 }
 
-  // Width and height (and weight)
+  // Global width/height/weight (of underlying tree)
   width: number = 0
   height: number = 0
   weight: number = 0
 
-  // Coordinate of top left corner
-  pos: Point2D = { x: 0, y: 0 }
-
   constructor(
     parent: CalderNode | null,
-    public geometrySerice: GeometryService
+    public geometrySerice: GeometryService,
+    public params: CalderParams
   ) {
     this.parent = parent
   }
@@ -35,22 +32,38 @@ export class CalderNode {
     return this.left_node === null && this.right_node === null
   }
 
-  computeCenter() {
-    if (this.left_node && this.right_node) {
-      this.center = this.geometrySerice.barycenter(
-        this.left_node.center,
-        this.right_node.center,
-        this.left_node.weight,
-        this.right_node.weight
-      )
+  draw(node: any): undefined {
+    node
+      .append('circle')
+      .attr('cx', this.pos.x)
+      .attr('cy', this.pos.y)
+      .attr('r', this.params.HINGE_RADIUS)
+      .class('calder_hinge')
+
+    if (this.left_node) {
+      node
+        .append('line')
+        .attr('x1', this.pos.x)
+        .attr('y1', this.pos.y)
+        .attr('x2', this.left_node.pos.x)
+        .attr('y2', this.left_node.pos.y)
+        .class('calder_wire')
+      this.left_node.draw(node)
     }
-  }
+    if (this.right_node) {
+      node
+        .append('line')
+        .attr('x1', this.pos.x)
+        .attr('y1', this.pos.y)
+        .attr('x2', this.right_node.pos.x)
+        .attr('y2', this.right_node.pos.y)
+        .class('calder_wire')
+      this.right_node.draw(node)
+    }
+    if (this.shape) {
+      this.shape.draw(node)
+    }
 
-  getAngleFromDeltaX(dx: number) {
-    return 0
-  }
-
-  getDeltaXFromAngle(angle: number) {
-    return 0
+    // Draw line from
   }
 }
