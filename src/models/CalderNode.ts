@@ -1,4 +1,7 @@
+import { GeometryService } from '../services/GeometryService'
+import { Point2D } from '../types/Point2D'
 import { CalderShape } from './CalderShape'
+import { CalderWire } from './CalderWire'
 
 export class CalderNode {
   /**
@@ -8,13 +11,10 @@ export class CalderNode {
   public left_node: CalderNode | null = null
   public right_node: CalderNode | null = null
   public shape: CalderShape | null = null
+  public wire: CalderWire| null = null
 
   // Center of mass
-  cx: number = 0
-  cy: number = 0
-
-  // Wire length
-  L: number = 0
+  center: Point2D = {x: 0, y: 0}
 
   // Width and height (and weight)
   width: number = 0
@@ -22,10 +22,9 @@ export class CalderNode {
   weight: number = 0
 
   // Coordinate of top left corner
-  abs_x: number = 0
-  abs_y: number = 0
+  pos: Point2D = {x: 0, y:0}
 
-  constructor(parent: CalderNode) {
+  constructor(parent: CalderNode, public geometrySerice: GeometryService) {
     this.parent = parent
   }
 
@@ -35,8 +34,7 @@ export class CalderNode {
 
   computeCenter(){
     if (this.left_node && this.right_node){
-        this.cx = (this.left_node.cx * this.left_node.weight + this.right_node.cx * this.right_node.weight) / ( this.left_node.weight + this.right_node.weight)
-        this.cy = (this.left_node.cy * this.left_node.weight + this.right_node.cy * this.right_node.weight) / ( this.left_node.weight + this.right_node.weight)
+        this.center = this.geometrySerice.barycenter(this.left_node.center, this.right_node.center, this.left_node.weight, this.right_node.weight)
     }
   }
 

@@ -1,17 +1,14 @@
-import { ShapeType } from "../types/shapeType"
+import { Point2D } from "../types/Point2D"
+import { ShapeType } from "../types/ShapeType"
 
 export class CalderShape {
-  /**
-   * Class for a shape (leaf) in the mobile
-   */
-
   // Center of mass
-  cx: number
-  cy: number
+  center: Point2D = {x: 0, y: 0}
+  // Type of shape
+  type: ShapeType = ShapeType.CIRCLE
 
-  constructor(public type: ShapeType) {
-    this.cx = 0
-    this.cy = 0
+  constructor(type: ShapeType) {
+    this.type = type
   }
 
   toSVG() {
