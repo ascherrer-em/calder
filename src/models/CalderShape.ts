@@ -1,19 +1,12 @@
-import { Point2D } from "../types/Point2D"
-import { ShapeType } from "../types/ShapeType"
+import { type Point2D } from '../types/Point2D'
 
-export class CalderShape {
+export abstract class CalderShape {
   // Center of mass
-  center: Point2D = {x: 0, y: 0}
-  // Type of shape
-  type: ShapeType = ShapeType.CIRCLE
+  center: Point2D = { x: 0, y: 0 }
 
-  constructor(type: ShapeType) {
-    this.type = type
-  }
+  constructor() {}
 
-  toSVG() {
-    if (this.type == ShapeType.CIRCLE) {
-      return ''
-    }
-  }
+  abstract toSVG(): string
+
+  abstract weight(): number
 }

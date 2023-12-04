@@ -1,4 +1,4 @@
-import { Point2D } from "../types/Point2D";
+import { type Point2D } from "../types/Point2D";
 
 export class GeometryService {
     barycenter(p1: Point2D, p2: Point2D, w1:number, w2:number){
