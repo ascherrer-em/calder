@@ -14,20 +14,20 @@ body {
 }
 
 .calder {
-  background-color: #efefef;
+  background-color: #ffffff;
 }
 
 .calder_circle {
-
+    opacity: 0.9;
 }
 
 .calder_wire {
-    stroke: black;
+    /*stroke: black;*/
     stroke-width: 2px;
 }
 
 .calder_hinge {
     fill: none;
-    stroke: black;
+    /*stroke: black;*/
     stroke-width: 2px;
 }
